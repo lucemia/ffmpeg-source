@@ -5,6 +5,7 @@
  */
 
 #include "libavutil/opt.h"
+#include "filters.h"
 #include "internal.h"
 #include "framesync.h"
 
@@ -633,16 +634,16 @@ static const AVFilterPad gltransition_outputs[] = {
   },
 };
 
-const AVFilter ff_vf_gltransition = {
-  .name          = "gltransition",
-  .description   = NULL_IF_CONFIG_SMALL("OpenGL blend transitions"),
+const FFFilter ff_vf_gltransition = {
+  .p.name        = "gltransition",
+  .p.description = NULL_IF_CONFIG_SMALL("OpenGL blend transitions"),
+  .p.priv_class  = &gltransition_class,
+  .p.flags       = AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC,
   .priv_size     = sizeof(GLTransitionContext),
   .preinit       = gltransition_framesync_preinit,
   .init          = init,
   .uninit        = uninit,
   .activate      = activate,
-  .priv_class    = &gltransition_class,
-  .flags         = AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC,
   FILTER_INPUTS(gltransition_inputs),
   FILTER_OUTPUTS(gltransition_outputs),
   FILTER_PIXFMTS(AV_PIX_FMT_YUV420P),
